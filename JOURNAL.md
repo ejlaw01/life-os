@@ -75,7 +75,38 @@ diagram in decisions/001_architecture.md.
 **Open questions:**
 - Claude API integration pattern (system prompt, tool-call loop)
 - Auth details
-- Project structure / monorepo layout
+
+---
+
+## 2026-04-13: Project structure — single repo, flat layout
+
+Decided to keep everything in one repo with a flat folder
+structure: `lib/`, `api/`, `mcp/` alongside the existing flat
+files. One `package.json`, one `tsconfig.json`, relative imports.
+
+Rejected separate repos (splits case study) and monorepo
+tooling like pnpm workspaces or Turborepo (solves problems
+that don't exist at this scale).
+
+Captured in decisions/004_project_structure.md.
+
+---
+
+## 2026-04-13: First morning ritual — timestamp trust issue
+
+Ran the first morning ritual and yapper mode session. Caught an
+immediate design flaw: Claude was fabricating timestamps for
+log.md entries instead of checking the system clock. All three
+entries were wrong by over an hour.
+
+This is a good early finding. A life OS that logs inaccurate
+timestamps is worse than no log at all — you can't spot time
+patterns in bad data. Fixed by adding a rule to always run
+`date +%H:%M` before writing any log entry.
+
+**Takeaway for V2:** The Vercel API should attach server-side
+timestamps to log entries, not rely on the client or the LLM.
+Timestamps are infrastructure, not conversation.
 
 ---
 

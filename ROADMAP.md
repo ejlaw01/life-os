@@ -107,3 +107,5 @@ _2026-04-13: Supabase schema finalized — three tables, no
 calendar table (see decisions/002_supabase_schema.md)_
 _2026-04-13: Client paths finalized — shared lib with two
 transport adapters (see decisions/003_client_paths.md)_
+_2026-04-13: Project structure — single repo, flat layout,
+no monorepo tooling (see decisions/004_project_structure.md)_
