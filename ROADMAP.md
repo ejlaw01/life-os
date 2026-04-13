@@ -40,8 +40,9 @@ development.
 Design the hosted API that powers both phone and desktop.
 See decisions/001_architecture.md for architecture rationale.
 
-- [ ] Finalize tool list and endpoint contracts
-- [ ] Design Supabase schema (todos, log entries, preferences)
+- [x] Finalize tool list and endpoint contracts
+- [x] Design Supabase schema — decisions/002_supabase_schema.md
+- [x] Define client paths and shared lib — decisions/003_client_paths.md
 - [ ] Define auth strategy (API key)
 - [ ] Write decision doc for data migration (flat files → Supabase)
 - [ ] Write decision doc for Claude API integration pattern
@@ -52,14 +53,18 @@ Ship the portfolio centerpiece.
 
 - [ ] Scaffold Vercel project (TypeScript)
 - [ ] Set up Supabase project and schema
-- [ ] Implement core endpoints
-  - [ ] POST /api/todos — get, add, complete
-  - [ ] POST /api/log — log entry, query
-  - [ ] POST /api/preferences — get, update
-- [ ] Implement Claude API orchestration
-  - [ ] POST /api/ritual — morning, wind-down
-- [ ] Implement calendar integration
-  - [ ] POST /api/calendar — get today, add event, check conflicts
+- [ ] Implement shared lib
+  - [ ] lib/todos.ts — addTodo, completeTodo, listTodos
+  - [ ] lib/log.ts — addEntry, queryLog
+  - [ ] lib/preferences.ts — get, set
+  - [ ] lib/calendar.ts — getToday, addEvent
+  - [ ] lib/supabase.ts — client setup
+- [ ] Implement Vercel endpoints (adapters over lib)
+  - [ ] POST /api/todos
+  - [ ] POST /api/log
+  - [ ] POST /api/preferences
+  - [ ] POST /api/calendar
+  - [ ] POST /api/voice — Claude API orchestration
 - [ ] Auth middleware (API key validation)
 - [ ] Deploy to Vercel
 - [ ] Migrate data from flat files to Supabase
@@ -78,7 +83,7 @@ Screen-free morning ritual from the phone.
 
 Connect Claude Code to the same API for desktop use.
 
-- [ ] Build local MCP server that wraps the Vercel API
+- [ ] Build local MCP server (adapter over shared lib)
 - [ ] Connect Claude Code to MCP server
 - [ ] Test all rituals through MCP
 
@@ -100,3 +105,5 @@ around hosted API + phone endpoint as primary deliverable
 (see decisions/001_architecture.md)_
 _2026-04-13: Supabase schema finalized — three tables, no
 calendar table (see decisions/002_supabase_schema.md)_
+_2026-04-13: Client paths finalized — shared lib with two
+transport adapters (see decisions/003_client_paths.md)_

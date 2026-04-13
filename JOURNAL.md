@@ -49,3 +49,53 @@ Key decisions:
   single-user system
 
 Captured in decisions/002_supabase_schema.md.
+
+---
+
+## 2026-04-13: Client paths and shared lib
+
+Each client takes the path that fits its capabilities:
+
+- Phone → `/api/voice` → Claude API parses intent → shared lib
+  → Supabase. One Shortcut, one tap. Claude is the intelligent
+  layer because the phone can't orchestrate tool calls.
+- Desktop → Claude Code → MCP → shared lib → Supabase. Claude
+  Code is already the intelligent layer — no need for Vercel.
+
+Key design decision: core Supabase operations live in `lib/`.
+Both the Vercel endpoints and the MCP server are thin adapters
+over the same functions. Logic written once, two transports.
+
+CRUD endpoints are also public — the voice endpoint uses them
+internally via Claude, but they're accessible directly too.
+
+Captured in decisions/003_client_paths.md. Updated architecture
+diagram in decisions/001_architecture.md.
+
+**Open questions:**
+- Claude API integration pattern (system prompt, tool-call loop)
+- Auth details
+- Project structure / monorepo layout
+
+---
+
+## 2026-04-13: Client paths — phone vs desktop
+
+Each client takes the path that fits its capabilities:
+
+- Phone (iOS Shortcut) → Vercel API → Claude API + Supabase.
+  The phone is a dumb client — can only make HTTP requests.
+  Vercel orchestrates the Claude tool-call loop server-side.
+  Single public endpoint: `/api/voice`.
+- Desktop (Claude Code) → local MCP server → Supabase directly.
+  Claude Code already handles orchestration natively via MCP.
+  No need for Vercel as middleman.
+
+Key insight: the Vercel API exists specifically because the phone
+can't run the multi-turn tool-call conversation that Claude needs.
+Desktop doesn't have this limitation.
+
+CRUD endpoints are internal to the Vercel function, not public.
+Both paths share the same Supabase instance.
+
+Captured in decisions/003_client_paths.md.

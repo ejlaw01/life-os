@@ -53,30 +53,57 @@ orchestration.**
 ### Architecture
 
 ```
-┌─────────────┐     ┌─────────────┐
-│ iOS Shortcut │     │ Claude Code  │
-└──────┬──────┘     └──────┬──────┘
-       │ HTTPS             │ MCP / HTTPS
-       │                   │
-       └───────┬───────────┘
-               │
-        ┌──────▼──────┐
-        │  Vercel API  │
-        │  (TypeScript) │
-        ├──────────────┤
-        │ Claude API   │  ← orchestration + reasoning
-        │ Supabase     │  ← data layer
-        └──────────────┘
+┌─────────────┐
+│ iOS Shortcut │
+└──────┬──────┘
+       │ POST /api/voice
+       ▼
+┌──────────────┐     ┌────────────┐
+│  Vercel API  │────▶│ Claude API │
+│  (TypeScript) │◀────│            │
+│              │     └────────────┘
+│  ┌────────┐  │
+│  │  lib/  │──┼────▶ Supabase
+│  └────────┘  │
+└──────────────┘         ▲
+                         │
+┌─────────────┐          │
+│ Claude Code  │          │
+└──────┬──────┘          │
+       │ MCP             │
+       ▼                 │
+┌──────────────┐         │
+│ Local MCP    │         │
+│  ┌────────┐  │         │
+│  │  lib/  │──┼─────────┘
+│  └────────┘  │
+└──────────────┘
 ```
+
+Both paths share the same `lib/` — core Supabase operations
+written once. Vercel and MCP are thin transport adapters.
+See decisions/003_client_paths.md for full rationale.
 
 ### Endpoints
 
+Public:
 ```
-POST /api/todos        → get, add, complete
-POST /api/log          → log entry, query
-POST /api/preferences  → get, update
-POST /api/calendar     → get today, add event, check conflicts
-POST /api/ritual       → morning, wind-down (Claude-orchestrated)
+POST /api/voice        → freeform voice input (Claude parses
+                         intent, calls lib functions)
+POST /api/todos        → direct CRUD
+POST /api/log          → direct CRUD
+POST /api/preferences  → direct CRUD
+POST /api/calendar     → direct CRUD
+```
+
+### Shared lib
+
+```
+lib/todos.ts           → addTodo, completeTodo, listTodos
+lib/log.ts             → addEntry, queryLog
+lib/preferences.ts     → get, set
+lib/calendar.ts        → getToday, addEvent
+lib/supabase.ts        → client setup
 ```
 
 ### Auth
