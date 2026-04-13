@@ -98,3 +98,5 @@ _Last updated: 2026-04-13_
 _2026-04-13: Rewrote roadmap — dropped V3 web app, restructured
 around hosted API + phone endpoint as primary deliverable
 (see decisions/001_architecture.md)_
+_2026-04-13: Supabase schema finalized — three tables, no
+calendar table (see decisions/002_supabase_schema.md)_
