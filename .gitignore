@@ -1,0 +1,14 @@
+# Personal data
+log.md
+todos.md
+preferences.md
+
+# Claude Code
+.claude/
+
+# Environment
+.env
+.env.local
+
+# Dependencies
+node_modules/

@@ -12,14 +12,15 @@ and the first interface to a system being built in public.
 This is a V1 flat-file personal OS — no build system, no
 dependencies. All data lives in markdown files at the repo root.
 
-- `todos.md` — active tasks, organized by category
-- `log.md` — timestamped activity log, newest first
-- `preferences.md` — confirmed user preferences (living doc)
-- `mcp-planning.md` — emerging MCP tool patterns from V1 usage
 - `JOURNAL.md` — dated case study entries
 - `ROADMAP.md` — phased build plan across all versions
 - `decisions/` — architectural decision records (numbered)
 - `retrospectives/` — weekly retrospectives
+
+Private (gitignored, local only):
+- `todos.md` — active tasks, organized by category
+- `log.md` — timestamped activity log, newest first
+- `preferences.md` — confirmed user preferences (living doc)
 
 ## File conventions
 
@@ -215,8 +216,7 @@ repeated interaction is a candidate tool:
 - What file operations repeat?
 - What would benefit from structured input/output vs. freeform?
 
-Maintain a running list in mcp-planning.md when patterns emerge.
-This becomes the spec for V2.
+Track patterns in the decision docs as they emerge.
 
 ## System evolution
 
