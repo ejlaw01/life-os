@@ -45,7 +45,7 @@ See decisions/001_architecture.md for architecture rationale.
 - [x] Define client paths and shared lib — decisions/003_client_paths.md
 - [x] Define auth strategy — decisions/005_auth.md
 - [ ] Write decision doc for data migration (flat files → Supabase)
-- [ ] Write decision doc for Claude API integration pattern
+- [x] Write decision doc for Claude API integration — decisions/006_claude_api_integration.md
 
 ## Phase 4: API server build
 
@@ -111,3 +111,6 @@ _2026-04-13: Project structure — single repo, flat layout,
 no monorepo tooling (see decisions/004_project_structure.md)_
 _2026-04-13: Auth — API key + Supabase service role, no RLS
 (see decisions/005_auth.md)_
+_2026-04-13: Claude API integration — system prompt in separate
+file, preferences loaded and injected per request, standard
+tool-call loop (see decisions/006_claude_api_integration.md)_

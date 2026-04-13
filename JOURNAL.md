@@ -72,8 +72,25 @@ internally via Claude, but they're accessible directly too.
 Captured in decisions/003_client_paths.md. Updated architecture
 diagram in decisions/001_architecture.md.
 
-**Open questions:**
-- Claude API integration pattern (system prompt, tool-call loop)
+---
+
+## 2026-04-13: Claude API integration pattern
+
+Voice endpoint orchestration: validate key, fetch preferences
+from Supabase, inject into system prompt, send to Claude with
+tools, loop tool calls until text response, return to phone.
+
+System prompt lives in `lib/system-prompt.ts` — separate from
+CLAUDE.md. Different context (voice vs desktop), different needs.
+Preferences loaded and injected on every request so Claude
+always has full context.
+
+No pet filter in voice prompt — phone input is intentional,
+unlike desktop transcription that might pick up background noise.
+
+Captured in decisions/006_claude_api_integration.md.
+
+**All Phase 3 design questions resolved.** Ready to build.
 
 ---
 
