@@ -5,104 +5,96 @@ documented as a case study and portfolio piece.
 
 ---
 
-## Phase 1: Foundation
+## Phase 1: Foundation ✓
 
 Set up the repo, flat files, and start using the system daily.
 
-- [ ] Initialize GitHub repo with README and CLAUDE.md
-- [ ] Create ~/life/ directory structure
-  - [ ] todos.md (seeded with current open items)
-  - [ ] log.md (empty, timestamped entries start day one)
-  - [ ] preferences.md (initial defaults)
-- [ ] Create case study directories
-  - [ ] decisions/
-  - [ ] retrospectives/
-  - [ ] JOURNAL.md
-- [ ] Create mcp-planning.md (empty, patterns tracked over time)
-- [ ] First commit with meaningful commit message
+- [x] Initialize GitHub repo with README and CLAUDE.md
+- [x] Create flat file structure
+  - [x] todos.md (seeded with current open items)
+  - [x] log.md (empty, timestamped entries start day one)
+  - [x] preferences.md (initial defaults)
+- [x] Create case study directories
+  - [x] decisions/
+  - [x] retrospectives/
+  - [x] JOURNAL.md
+- [x] Create mcp-planning.md (empty, patterns tracked over time)
+- [x] First commit with meaningful commit message
 - [ ] Run first morning ritual with Claude Code
 
 ## Phase 2: Daily driver
 
-Use the system consistently for 2+ weeks. Prove the habit before
-adding complexity.
+Use the system consistently. Prove the habit alongside
+development.
 
-- [ ] Complete 5 consecutive morning rituals
-- [ ] Complete 5 consecutive wind-down rituals
+- [ ] Complete 5 morning rituals
+- [ ] Complete 5 wind-down rituals
 - [ ] Use yapper mode during at least 3 work sessions
 - [ ] First weekly retrospective (Friday)
 - [ ] First weekly system check-in
 - [ ] Review and refine CLAUDE.md based on actual usage friction
-- [ ] Write first decision doc (decisions/001_*.md)
-- [ ] Identify first 3 recurring interaction patterns for MCP planning
-- [ ] Update mcp-planning.md with observed tool candidates
+- [ ] Write first decision doc — ✓ decisions/001_architecture.md
 
-## Phase 3: Case study scaffolding
+## Phase 3: API server design
 
-Start shaping the public-facing narrative while the system is
-still being used and refined.
+Design the hosted API that powers both phone and desktop.
+See decisions/001_architecture.md for architecture rationale.
 
-- [ ] Write JOURNAL.md entries for at least 3 significant conversations
-- [ ] Accumulate 3+ decision docs
-- [ ] Draft case study outline (problem → approach → architecture → results)
-- [ ] Identify key commits that tell the evolution story
-- [ ] Make repo public (or prepare it for public visibility)
-
-## Phase 4: MCP server design
-
-Transition from flat files to structured tools. The spec comes
-from V1 usage patterns, not guesswork.
-
-- [ ] Finalize MCP tool list from mcp-planning.md
+- [ ] Finalize tool list and endpoint contracts
 - [ ] Design Supabase schema (todos, log entries, preferences)
-- [ ] Define MCP server architecture
-  - [ ] Tool interfaces and input/output contracts
-  - [ ] Auth and access patterns
-  - [ ] Error handling strategy
-- [ ] Write decision doc for data migration approach (flat files → Supabase)
-- [ ] Write decision doc for MCP server tech choices
+- [ ] Define auth strategy (API key)
+- [ ] Write decision doc for data migration (flat files → Supabase)
+- [ ] Write decision doc for Claude API integration pattern
 
-## Phase 5: MCP server build
+## Phase 4: API server build
 
 Ship the portfolio centerpiece.
 
-- [ ] Scaffold MCP server project
-- [ ] Implement core tools
-  - [ ] get_todos / add_todo / complete_todo
-  - [ ] log_entry / query_log
-  - [ ] get_preferences / update_preference
-  - [ ] propose_top_three
+- [ ] Scaffold Vercel project (TypeScript)
+- [ ] Set up Supabase project and schema
+- [ ] Implement core endpoints
+  - [ ] POST /api/todos — get, add, complete
+  - [ ] POST /api/log — log entry, query
+  - [ ] POST /api/preferences — get, update
+- [ ] Implement Claude API orchestration
+  - [ ] POST /api/ritual — morning, wind-down
 - [ ] Implement calendar integration
-  - [ ] get_calendar_today
-  - [ ] add_event / check_conflicts
+  - [ ] POST /api/calendar — get today, add event, check conflicts
+- [ ] Auth middleware (API key validation)
+- [ ] Deploy to Vercel
 - [ ] Migrate data from flat files to Supabase
-- [ ] Connect Claude Code to MCP server
-- [ ] Test morning ritual through MCP tools
-- [ ] Test wind-down ritual through MCP tools
-- [ ] Test yapper mode through MCP tools
 
-## Phase 6: Mobile endpoint
+## Phase 5: Phone endpoint
 
 Screen-free morning ritual from the phone.
 
-- [ ] Design phone endpoint architecture
-- [ ] Build iOS Shortcut (triple-click → Ask Claude → Speak Text)
-- [ ] Connect shortcut to Claude with MCP server
-- [ ] Test full morning ritual via voice on phone
-- [ ] Write decision doc for mobile architecture choices
+- [ ] Build iOS Shortcut (trigger → dictation → API → speak)
+- [ ] Test morning ritual via voice
+- [ ] Test yapper mode via voice
+- [ ] Test wind-down via voice
+- [ ] Write decision doc for mobile UX choices
 
-## Phase 7: Web app (V3)
+## Phase 6: Claude Code MCP wrapper
 
-The client-facing demo piece. Built on the same MCP tools —
-a client, not a rebuild.
+Connect Claude Code to the same API for desktop use.
 
-- [ ] Design dashboard UI (today's top 3, log feed, calendar view)
-- [ ] Scaffold Next.js project
-- [ ] Implement dashboard views consuming MCP tools
-- [ ] Polish for portfolio presentation
-- [ ] Deploy to Vercel
-- [ ] Add to Bit Lore portfolio as featured project
+- [ ] Build local MCP server that wraps the Vercel API
+- [ ] Connect Claude Code to MCP server
+- [ ] Test all rituals through MCP
+
+## Phase 7: Case study
+
+Shape the public-facing narrative.
+
+- [ ] Write JOURNAL.md entries for significant conversations
+- [ ] Accumulate 3+ decision docs
+- [ ] Draft case study outline (problem → approach → architecture → results)
+- [ ] Identify key commits that tell the evolution story
+- [ ] Polish repo for public visibility
 
 ---
 
-_Last updated: 2026-04-10_
+_Last updated: 2026-04-13_
+_2026-04-13: Rewrote roadmap — dropped V3 web app, restructured
+around hosted API + phone endpoint as primary deliverable
+(see decisions/001_architecture.md)_

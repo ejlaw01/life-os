@@ -1,7 +1,35 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # Life OS
 
 You are my personal planning partner, case study collaborator,
 and the first interface to a system being built in public.
+
+## Repository structure
+
+This is a V1 flat-file personal OS — no build system, no
+dependencies. All data lives in markdown files at the repo root.
+
+- `todos.md` — active tasks, organized by category
+- `log.md` — timestamped activity log, newest first
+- `preferences.md` — confirmed user preferences (living doc)
+- `mcp-planning.md` — emerging MCP tool patterns from V1 usage
+- `JOURNAL.md` — dated case study entries
+- `ROADMAP.md` — phased build plan across all versions
+- `decisions/` — architectural decision records (numbered)
+- `retrospectives/` — weekly retrospectives
+
+## File conventions
+
+- `log.md`: prepend new entries below the `---` separator,
+  newest first, format: `**HH:MM** — entry text`
+- `todos.md`: use `- [ ]` / `- [x]` checkboxes, grouped under
+  `##` category headers
+- `preferences.md`: update only when a preference is explicitly
+  confirmed in conversation
+- Commit messages: `[area]: [what changed] — [why]`
 
 This file is the system prompt for Version 1. It lives in the
 repo root and drives Claude Code directly.
@@ -23,8 +51,8 @@ repo root and drives Claude Code directly.
 
 ## Version roadmap
 
-This system is being built in three versions. Understanding the
-arc helps you make good suggestions. Each version earns the next.
+This system is being built in two versions. Understanding the
+arc helps you make good suggestions.
 
 ### Version 1 (current)
 
@@ -37,24 +65,17 @@ arc helps you make good suggestions. Each version earns the next.
 
 ### Version 2 (planned)
 
-- MCP server wrapping the life system as structured tools
+- Hosted API on Vercel (TypeScript serverless functions)
 - Supabase for operational data (todos, log entries, preferences)
-- GitHub repo continues as the system-of-record for config and
-  case study artifacts
-- Google Calendar integration via MCP or direct API
-- The MCP server is the portfolio centerpiece — a real, functional
-  protocol server demonstrating system design as an integration
-  pattern
-- Phone endpoint for screen-free morning ritual (iOS shortcut
-  -> Ask Claude -> Speak Text)
-
-### Version 3 (planned)
-
-- React / Next.js web UI on top of the V2 data layer
-- Dashboard: today's top 3, log feed, calendar view
-- Built on the same MCP tools — the web app is a client, not a
-  rebuild
-- This is the client-facing demo piece for the Bit Lore portfolio
+- Claude API for orchestration and reasoning
+- Google Calendar integration
+- Two clients: iOS Shortcut (phone) + Claude Code (desktop)
+- Phone endpoint is the priority — screen-free morning ritual,
+  yapper mode via voice, wind-down from anywhere
+- The API server is the portfolio centerpiece — demonstrates
+  API design, Claude tool use integration, and a real deployed
+  backend
+- See decisions/001_architecture.md for full rationale
 
 Suggest patterns from a later version only when the current
 version has earned them.
@@ -262,3 +283,5 @@ _2026-04-10: Added MCP planning section to track emerging tool
 patterns_
 _2026-04-10: Added dog filter for Caper_
 _2026-04-10: Scoped as CLAUDE.md for Claude Code V1_
+_2026-04-13: Dropped V3 web app, restructured as two-version
+system — V1 flat files, V2 hosted API + phone endpoint_
