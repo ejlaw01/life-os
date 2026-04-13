@@ -97,5 +97,7 @@ Code already does local reasoning for free.
   orchestration loop, not exposed publicly
 - MCP server is a separate local package, not deployed
 - Both paths share the same Supabase instance
-- System prompt for the Claude API call needs to be maintained
-  alongside CLAUDE.md
+- System prompt (`lib/system-prompt.ts`) and CLAUDE.md will
+  drift over time. Both files should reference the other —
+  when ritual logic changes in one, check the other. Add to
+  commit discipline.

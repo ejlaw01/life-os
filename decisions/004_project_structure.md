@@ -48,18 +48,16 @@ between folders.
 ```
 life-os/
   CLAUDE.md, JOURNAL.md, todos.md, etc.   ← V1 flat files + docs
+  api/                                     ← Vercel serverless functions
+    voice.ts                               ← only public endpoint
   lib/                                     ← shared Supabase operations
     todos.ts
     log.ts
     preferences.ts
     calendar.ts
+    daily-plans.ts
     supabase.ts
-  api/                                     ← Vercel serverless functions
-    voice.ts
-    todos.ts
-    log.ts
-    preferences.ts
-    calendar.ts
+    system-prompt.ts
   mcp/                                     ← local MCP server
     server.ts
   package.json

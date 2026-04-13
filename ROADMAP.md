@@ -57,13 +57,11 @@ Ship the portfolio centerpiece.
   - [ ] lib/todos.ts — addTodo, completeTodo, listTodos
   - [ ] lib/log.ts — addEntry, queryLog
   - [ ] lib/preferences.ts — get, set
-  - [ ] lib/calendar.ts — getToday, addEvent
+  - [ ] lib/calendar.ts — getToday, addEvent, checkConflicts
+  - [ ] lib/daily-plans.ts — saveDailyPlan, getDailyPlan
   - [ ] lib/supabase.ts — client setup
-- [ ] Implement Vercel endpoints (adapters over lib)
-  - [ ] POST /api/todos
-  - [ ] POST /api/log
-  - [ ] POST /api/preferences
-  - [ ] POST /api/calendar
+  - [ ] lib/system-prompt.ts — voice endpoint prompt
+- [ ] Implement voice endpoint
   - [ ] POST /api/voice — Claude API orchestration
 - [ ] Auth middleware (API key validation)
 - [ ] Deploy to Vercel

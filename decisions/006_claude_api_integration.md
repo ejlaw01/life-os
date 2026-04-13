@@ -65,8 +65,8 @@ The loop handles this transparently.
 
 ### Tool definitions
 
-Same operations as the shared lib, exposed as Claude tool
-schemas:
+Lib operations exposed as Claude tool schemas, minus
+preferences (already injected into the system prompt):
 
 ```
 addTodo(title, category, parent_id?, planned_before?,
@@ -75,7 +75,6 @@ completeTodo(id)
 listTodos(category?)
 addLogEntry(content)
 queryLog(limit?, since?)
-getPreferences()
 setPreference(key, value)
 getCalendarToday()
 addEvent(title, start, end)
@@ -106,3 +105,7 @@ This is enforced in the system prompt, not in code.
   need different prompts. Desktop has case study, repo
   conventions, file operations. Phone has voice-optimized
   ritual logic.
+- **getPreferences as a tool** — redundant. Preferences are
+  already injected into the system prompt on every request.
+  Giving Claude the tool means paying tokens twice for the
+  same data.

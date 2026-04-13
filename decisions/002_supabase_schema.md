@@ -66,7 +66,7 @@ create table todos (
   id              uuid primary key default gen_random_uuid(),
   title           text not null,
   category        text not null,
-  parent_id       uuid references todos(id),
+  parent_id       uuid references todos(id) on delete cascade,
   position        integer not null default 0,
   planned_before  date,
   planned_after   date,

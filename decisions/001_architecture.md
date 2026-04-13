@@ -86,24 +86,26 @@ See decisions/003_client_paths.md for full rationale.
 
 ### Endpoints
 
-Public:
+Single public endpoint:
 ```
-POST /api/voice        → freeform voice input (Claude parses
-                         intent, calls lib functions)
-POST /api/todos        → direct CRUD
-POST /api/log          → direct CRUD
-POST /api/preferences  → direct CRUD
-POST /api/calendar     → direct CRUD
+POST /api/voice   → freeform voice input (Claude parses
+                    intent, calls lib functions server-side)
 ```
+
+No public CRUD routes. Lib functions are called internally
+by Claude during the voice orchestration loop, and locally
+by the MCP server for desktop.
 
 ### Shared lib
 
 ```
-lib/todos.ts           → addTodo, completeTodo, listTodos
-lib/log.ts             → addEntry, queryLog
-lib/preferences.ts     → get, set
-lib/calendar.ts        → getToday, addEvent
-lib/supabase.ts        → client setup
+lib/todos.ts         → addTodo, completeTodo, listTodos
+lib/log.ts           → addEntry, queryLog
+lib/preferences.ts   → get, set
+lib/calendar.ts      → getToday, addEvent, checkConflicts
+lib/daily-plans.ts   → saveDailyPlan, getDailyPlan
+lib/supabase.ts      → client setup
+lib/system-prompt.ts → voice endpoint system prompt
 ```
 
 ### Auth
