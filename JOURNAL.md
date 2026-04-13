@@ -74,7 +74,18 @@ diagram in decisions/001_architecture.md.
 
 **Open questions:**
 - Claude API integration pattern (system prompt, tool-call loop)
-- Auth details
+
+---
+
+## 2026-04-13: Auth — API key + service role
+
+Single API key protects the public Vercel surface. Supabase
+service_role key used server-side by both Vercel and MCP. No
+user accounts, no JWT, no RLS. If multi-user is ever needed,
+the migration path is clear (add user_id, enable RLS, swap to
+Supabase Auth) but not worth building for one user.
+
+Captured in decisions/005_auth.md.
 
 ---
 

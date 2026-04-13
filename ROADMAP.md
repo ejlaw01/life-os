@@ -43,7 +43,7 @@ See decisions/001_architecture.md for architecture rationale.
 - [x] Finalize tool list and endpoint contracts
 - [x] Design Supabase schema — decisions/002_supabase_schema.md
 - [x] Define client paths and shared lib — decisions/003_client_paths.md
-- [ ] Define auth strategy (API key)
+- [x] Define auth strategy — decisions/005_auth.md
 - [ ] Write decision doc for data migration (flat files → Supabase)
 - [ ] Write decision doc for Claude API integration pattern
 
@@ -109,3 +109,5 @@ _2026-04-13: Client paths finalized — shared lib with two
 transport adapters (see decisions/003_client_paths.md)_
 _2026-04-13: Project structure — single repo, flat layout,
 no monorepo tooling (see decisions/004_project_structure.md)_
+_2026-04-13: Auth — API key + Supabase service role, no RLS
+(see decisions/005_auth.md)_
