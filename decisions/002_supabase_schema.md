@@ -12,10 +12,15 @@ calendar.
 
 ## Decisions
 
-### Three tables, no calendar table
+### Four tables, no calendar table
 
 **todos** — replaces todos.md. Supports categories, subtasks
-via parent_id, optional due dates, and positional ordering.
+via parent_id, and positional ordering. Two optional date
+columns for scheduling flexibility (see below).
+
+**daily_plans** — stores the confirmed top 3 from each morning
+ritual as a historical snapshot. The wind-down ritual compares
+the plan against what actually got completed. One row per day.
 
 **log_entries** — replaces log.md. Freeform timestamped text.
 No tags or categories — Claude can analyze entries on the fly
@@ -33,10 +38,20 @@ category and position. Storing priority would duplicate what
 Claude already knows and create a sync problem when priorities
 shift.
 
-### Due dates are optional
+### Two date columns instead of one
 
-Most todos won't have them. The ones that do are the ones that
-matter for the morning ritual's overdue detection.
+Todos have `planned_before` (deadline — "before Friday") and
+`planned_after` (deferred — "after Monday"), both nullable.
+
+- Both null → no date constraint
+- Both set to the same date → "on that day"
+- Only `planned_before` → deadline without deferral
+- Only `planned_after` → deferred without deadline
+
+This lets the morning ritual skip deferred tasks that aren't
+actionable yet and prioritize tasks with approaching deadlines.
+A single `due_date` column can't express "don't show me this
+until next week."
 
 ### Calendar reads from Google directly
 
@@ -48,16 +63,25 @@ events. Avoids sync, staleness, and duplication.
 
 ```sql
 create table todos (
+  id              uuid primary key default gen_random_uuid(),
+  title           text not null,
+  category        text not null,
+  parent_id       uuid references todos(id),
+  position        integer not null default 0,
+  planned_before  date,
+  planned_after   date,
+  completed       boolean not null default false,
+  completed_at    timestamptz,
+  created_at      timestamptz not null default now(),
+  updated_at      timestamptz not null default now()
+);
+
+create table daily_plans (
   id          uuid primary key default gen_random_uuid(),
-  title       text not null,
-  category    text not null,
-  parent_id   uuid references todos(id),
-  position    integer not null default 0,
-  due_date    date,
-  completed   boolean not null default false,
-  completed_at timestamptz,
-  created_at  timestamptz not null default now(),
-  updated_at  timestamptz not null default now()
+  date        date unique not null,
+  task_ids    uuid[] not null,
+  first_step  text,
+  created_at  timestamptz not null default now()
 );
 
 create table log_entries (
@@ -85,3 +109,7 @@ create table preferences (
   sync problems.
 - **Priority column on todos** — duplicates Claude's inference
   from CLAUDE.md hierarchy.
+- **Single due_date column** — replaced by planned_before /
+  planned_after. A single date can't express both deadlines and
+  deferrals. "Do this before Friday" and "don't show me this
+  until Monday" are different scheduling constraints.
