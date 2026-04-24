@@ -1,0 +1,22 @@
+{
+  "name": "life-os",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "vercel build",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write 'lib/**/*.ts' 'api/**/*.ts' 'mcp/**/*.ts'"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@vercel/node": "^5.1.0",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3",
+    "typescript": "^5.8.0",
+    "vercel": "^41.0.0"
+  }
+}
