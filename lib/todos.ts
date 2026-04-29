@@ -1,36 +1,72 @@
-// Your file to implement.
-// See decisions/002_supabase_schema.md for the todos table schema.
-//
-// Functions to export:
-//   addTodo(title, category, options?) — options: parent_id, planned_before, planned_after
-//   completeTodo(id)
-//   listTodos(category?) — filter by category, exclude completed, respect planned_after
-//   updateTodo(id, fields) — partial update
-//   deleteTodo(id) — cascade handles subtasks
-//
-// Use sql from './db.js' — see log.ts or preferences.ts for examples.
-
 import sql from './db.js'
 
-export async function addTodo(                                                                    
-title: string,                                                                                  
-category: string,                                                                               
-options?: {                                                                                     
+export async function addTodo(
+  title: string,
+  category: string,
+  options?: {
     parent_id?: string
-    planned_before?: string                                                                       
+    planned_before?: string
     planned_after?: string
-}
+  },
 ) {
-const [todo] = await sql`
+  const [todo] = await sql`
     INSERT INTO todos (title, category, parent_id, planned_before, planned_after)
-    VALUES (                                                                                      
-    ${title},
-    ${category},                                                                                
-    ${options?.parent_id ?? null},
-    ${options?.planned_before ?? null},
-    ${options?.planned_after ?? null}
+    VALUES (
+      ${title},
+      ${category},
+      ${options?.parent_id ?? null},
+      ${options?.planned_before ?? null},
+      ${options?.planned_after ?? null}
     )
     RETURNING *
-`
-return todo
+  `
+  return todo
+}
+
+export async function completeTodo(id: string) {
+  const [todo] = await sql`
+    UPDATE todos
+    SET completed = true, completed_at = now(), updated_at = now()
+    WHERE id = ${id}
+    RETURNING *
+  `
+  return todo
+}
+
+export async function listTodos(category?: string) {
+  const todos = await sql`
+    SELECT *
+    FROM todos
+    WHERE completed = false
+    AND (planned_after IS NULL OR planned_after <= CURRENT_DATE)
+    ${category ? sql`AND category = ${category}` : sql``}
+    ORDER BY category, position
+  `
+  return todos
+}
+
+export async function updateTodo(
+  id: string,
+  fields: {
+    title?: string
+    category?: string
+    planned_before?: string | null
+    planned_after?: string | null
+    position?: number
+  },
+) {
+  const [todo] = await sql`
+    UPDATE todos
+    SET ${sql(fields, ...(Object.keys(fields) as (keyof typeof fields)[]))}, updated_at = now()
+    WHERE id = ${id}
+    RETURNING *
+  `
+  return todo
+}
+
+export async function deleteTodo(id: string) {
+  await sql`
+    DELETE FROM todos
+    WHERE id = ${id}
+  `
 }
