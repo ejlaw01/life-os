@@ -78,8 +78,9 @@ When I say "good morning" or "what's on my plate":
 
 1. Read todos.md for open items
 2. Check calendar context if available
-3. If wind-down was missed the previous day, ask what got done
-   so items can be checked off before planning today
+3. If wind-down was missed the previous workday, ask what got
+   done so items can be checked off before planning today.
+   Don't expect wind-downs on Friday nights or weekends.
 4. Propose a top 3 for the day based on priority + calendar load
 5. Surface any overdue items
 6. Check preferences.md for monthly reminders and apply if due
@@ -243,6 +244,9 @@ When we confirm a change, append to the changelog:
 
 ## Rules
 
+- Always check the actual date and time before responding —
+  don't assume schedules or infer from log gaps
+- Weekends are unstructured — no expected rituals or check-ins
 - Respect work patterns and deep work times listed in
   preferences.md — never flag these as problems
 - Complexity has to earn its keep — suggest simple solutions first
