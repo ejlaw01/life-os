@@ -8,11 +8,12 @@ export async function get(key: string) {
   return row?.value ?? null
 }
 
-export async function getAll() {
-  return sql`
+export async function getAll(): Promise<{ key: string; value: string }[]> {
+  const rows = await sql`
     SELECT key, value FROM preferences
     ORDER BY key
   `
+  return rows as unknown as { key: string; value: string }[]
 }
 
 export async function set(key: string, value: string) {

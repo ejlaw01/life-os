@@ -3,7 +3,7 @@ import sql from './db.js'
 export async function saveDailyPlan(
   date: string,
   taskIds: string[],
-  firstStep?: string
+  firstStep?: string,
 ) {
   const [plan] = await sql`
     INSERT INTO daily_plans (date, task_ids, first_step)
