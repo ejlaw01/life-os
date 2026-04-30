@@ -158,3 +158,38 @@ CRUD endpoints are internal to the Vercel function, not public.
 Both paths share the same Supabase instance.
 
 Captured in decisions/003_client_paths.md.
+
+---
+
+## 2026-04-30: V2 day one — the ritual is too slow
+
+First full day on V2. Ran the morning ritual and noticed it took
+roughly a minute to come back with a proposed top 3.
+
+Diagnosed three causes:
+
+1. The ritual makes three separate MCP calls (todos, plan, log)
+   with model reasoning between each.
+2. Cold Postgres connection on the first query in a fresh MCP
+   session.
+3. Some MCP tool schemas aren't pre-loaded into the model's
+   context, so the harness lazy-fetches them mid-flow. Not
+   something this repo can fix.
+
+Also caught a real gap: no MCP tool exposed preferences for
+reading, only writing. Step 6 of the ritual ("check `reminders.*`
+and apply any that are due") was being silently skipped.
+
+Added a `getMorningContext(date)` MCP tool that returns todos,
+today's plan, yesterday's plan, recent log, and all preferences
+in one call, with the lib queries running in parallel. One trip
+instead of three, and the ritual finally has visibility into
+preferences.
+
+Captured in decisions/007_morning_context_tool.md. CLAUDE.md
+ritual update pending — proposed but not yet applied.
+
+**Case-study moment:** the system noticed its own latency on
+day one and grew a tool to address it. This is exactly the
+"every repeated interaction is a candidate tool" pattern
+CLAUDE.md flags.
