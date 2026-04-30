@@ -55,10 +55,13 @@ server.tool(
 
 server.tool(
   'listTodos',
-  'List open todos, optionally filtered by category',
-  { category: z.string().optional() },
-  async ({ category }) => {
-    const todos = await listTodos(category)
+  'List todos, optionally filtered by category. Set include_completed=true for the full roadmap view (parent + children including done).',
+  {
+    category: z.string().optional(),
+    include_completed: z.boolean().optional(),
+  },
+  async ({ category, include_completed }) => {
+    const todos = await listTodos(category, { include_completed })
     return { content: [{ type: 'text', text: JSON.stringify(todos) }] }
   },
 )

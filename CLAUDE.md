@@ -265,6 +265,12 @@ When we confirm a change, append to the changelog:
   retrospectively
 - The repo is always in a committable state — don't leave files
   half-written
+- Don't delete todos mid-day. Mark them complete instead — the
+  visual accumulation of `[x]` items through the day is part of
+  the reward. Sweep redundant or merged-out items at wind-down
+- Don't delete a child todo while its parent is still open. The
+  child's history is part of the parent's roadmap until the
+  parent closes
 
 ---
 
@@ -289,3 +295,7 @@ new `retrospectives` table; markdown files retained as a
 read-only snapshot_
 _2026-04-30: Morning ritual loads context via `getMorningContext`
 in one call; preferences are now readable in the ritual_
+_2026-04-30: Deletion-timing rules — mark complete throughout the
+day, sweep at wind-down, don't delete child todos while their
+parent is open. `listTodos` gained an `include_completed` flag
+for roadmap views_

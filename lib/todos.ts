@@ -33,14 +33,18 @@ export async function completeTodo(id: string) {
   return todo
 }
 
-export async function listTodos(category?: string) {
+export async function listTodos(
+  category?: string,
+  options?: { include_completed?: boolean },
+) {
   const todos = await sql`
     SELECT *
     FROM todos
-    WHERE completed = false
+    WHERE 1=1
+    ${options?.include_completed ? sql`` : sql`AND completed = false`}
     AND (planned_after IS NULL OR planned_after <= CURRENT_DATE)
     ${category ? sql`AND category = ${category}` : sql``}
-    ORDER BY category, position
+    ORDER BY category, position, completed_at
   `
   return todos
 }
