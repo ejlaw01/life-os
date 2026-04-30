@@ -193,3 +193,41 @@ ritual update pending — proposed but not yet applied.
 day one and grew a tool to address it. This is exactly the
 "every repeated interaction is a candidate tool" pattern
 CLAUDE.md flags.
+
+---
+
+## 2026-04-30: Progress is a UX problem
+
+Caught two related UX failures during the afternoon's work session.
+
+**1.** Mid-day I deleted a redundant child todo (`d181d731`,
+search-replace URLs) when the user clarified it was the same
+issue as the staging redirect subtask. Looked tidy in the
+moment. Wrong move — the deletion erased visible progress.
+The user wanted to see it *checked off*, not gone. The reward
+is watching `[x]` accumulate through the day.
+
+**2.** When surfacing a child todo in chat, I was rendering it
+as a flat checkbox without its parent or sibling context. That
+strips the larger goal from view. If today's plan touches a
+leaf, the right rendering is the parent group with all its
+children, completed and open both.
+
+Both fixes landed:
+
+- New rules in CLAUDE.md `## Rules`: mark complete throughout
+  the day, sweep at wind-down, don't delete child todos while
+  the parent is still open.
+- Memory rule (chat-only) for parent + sibling context rendering.
+- `listTodos` gained an `include_completed` flag so the rendering
+  layer can actually fetch the full picture, not just open items.
+
+Restored `d181d731` as a completed sibling under "Staging
+environment setup" so the day's accumulated progress is intact.
+
+**Case-study moment:** day two of V2 surfaces a more interesting
+class of issue than day one. Day one was about latency — pure
+mechanics. Day two is about progress visibility — a UX/psychology
+question the system has to answer for the user to actually trust
+it. The data layer was fine; the rendering layer wasn't telling
+the right story.
