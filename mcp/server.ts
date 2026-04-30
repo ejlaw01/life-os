@@ -11,6 +11,11 @@ import {
 import { addEntry, queryLog } from '../lib/log.js'
 import { set as setPreference } from '../lib/preferences.js'
 import { saveDailyPlan, getDailyPlan } from '../lib/daily-plans.js'
+import {
+  saveRetrospective,
+  getRetrospective,
+  listRetrospectives,
+} from '../lib/retrospectives.js'
 
 const server = new McpServer({
   name: 'life-os',
@@ -138,6 +143,36 @@ server.tool(
   async ({ date }) => {
     const plan = await getDailyPlan(date)
     return { content: [{ type: 'text', text: JSON.stringify(plan) }] }
+  },
+)
+
+server.tool(
+  'saveRetrospective',
+  'Save a weekly retrospective. week_start is the Monday of the week (YYYY-MM-DD)',
+  { week_start: z.string(), content: z.string() },
+  async ({ week_start, content }) => {
+    const row = await saveRetrospective(week_start, content)
+    return { content: [{ type: 'text', text: JSON.stringify(row) }] }
+  },
+)
+
+server.tool(
+  'getRetrospective',
+  'Get the retrospective for a given week (Monday YYYY-MM-DD)',
+  { week_start: z.string() },
+  async ({ week_start }) => {
+    const row = await getRetrospective(week_start)
+    return { content: [{ type: 'text', text: JSON.stringify(row) }] }
+  },
+)
+
+server.tool(
+  'listRetrospectives',
+  'List recent retrospectives, newest first',
+  { limit: z.number().optional() },
+  async ({ limit }) => {
+    const rows = await listRetrospectives(limit)
+    return { content: [{ type: 'text', text: JSON.stringify(rows) }] }
   },
 )
 

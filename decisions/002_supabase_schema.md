@@ -12,7 +12,7 @@ calendar.
 
 ## Decisions
 
-### Four tables, no calendar table
+### Five tables, no calendar table
 
 **todos** — replaces todos.md. Supports categories, subtasks
 via parent_id, and positional ordering. Two optional date
@@ -26,9 +26,16 @@ the plan against what actually got completed. One row per day.
 No tags or categories — Claude can analyze entries on the fly
 if pattern detection is needed.
 
-**preferences** — replaces preferences.md. Key-value store.
+**preferences** — replaces preferences.md. Key-value store with
+prefix-based grouping (e.g. `priorities.1`, `work_patterns.late_evenings`).
 Flexible for a single-user system where preferences are
-freeform and evolving.
+freeform and evolving — adding a new category is just a new
+prefix, no schema change.
+
+**retrospectives** — replaces retrospectives/. Weekly
+reflections, keyed on the Monday of the week. Personal
+operational data, kept out of git for the same reason as
+todos/log/preferences.
 
 ### No priority column on todos
 
@@ -95,6 +102,13 @@ create table preferences (
   key         text unique not null,
   value       text not null,
   updated_at  timestamptz not null default now()
+);
+
+create table retrospectives (
+  id          uuid primary key default gen_random_uuid(),
+  week_start  date unique not null,
+  content     text not null,
+  created_at  timestamptz not null default now()
 );
 ```
 
