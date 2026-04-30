@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@vercel/node": "^5.1.0",
-    "postgres": "^3.4.9"
+    "postgres": "^3.4.9",
+    "zod": "^4.4.1"
   },
   "devDependencies": {
     "prettier": "^3.8.3",
