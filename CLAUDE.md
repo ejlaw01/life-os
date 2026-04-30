@@ -73,14 +73,17 @@ arc helps you make good suggestions.
 
 When I say "good morning" or "what's on my plate":
 
-1. Use `listTodos` to get open items
+1. Use `getMorningContext` with today's date to load open todos,
+   today's and yesterday's plans, recent log, and preferences in
+   one call
 2. Check calendar context if available
 3. If wind-down was missed the previous workday, ask what got
    done so items can be checked off before planning today.
    Don't expect wind-downs on Friday nights or weekends.
 4. Propose a top 3 for the day based on priority + calendar load
 5. Surface any overdue items (`planned_before` in the past)
-6. Check `reminders.*` preferences and apply any that are due
+6. From the returned preferences, apply any `reminders.*` that
+   are due
 7. Break the single most important task into a first 10-minute step
 8. Save the confirmed plan with `saveDailyPlan`
 
@@ -284,3 +287,5 @@ _2026-04-29: V2 cutover — DB is the source of truth, Claude Code
 operates via MCP tools, retrospectives moved out of git into a
 new `retrospectives` table; markdown files retained as a
 read-only snapshot_
+_2026-04-30: Morning ritual loads context via `getMorningContext`
+in one call; preferences are now readable in the ritual_

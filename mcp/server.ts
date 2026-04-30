@@ -16,6 +16,7 @@ import {
   getRetrospective,
   listRetrospectives,
 } from '../lib/retrospectives.js'
+import { getMorningContext } from '../lib/morning-context.js'
 
 const server = new McpServer({
   name: 'life-os',
@@ -173,6 +174,16 @@ server.tool(
   async ({ limit }) => {
     const rows = await listRetrospectives(limit)
     return { content: [{ type: 'text', text: JSON.stringify(rows) }] }
+  },
+)
+
+server.tool(
+  'getMorningContext',
+  'Load all morning-ritual context in one call: open todos, today and yesterday plans, recent log, preferences.',
+  { date: z.string() },
+  async ({ date }) => {
+    const context = await getMorningContext(date)
+    return { content: [{ type: 'text', text: JSON.stringify(context) }] }
   },
 )
 
