@@ -74,3 +74,22 @@ export async function deleteTodo(id: string) {
     WHERE id = ${id}
   `
 }
+
+export async function recordCompletedWork(
+  title: string,
+  category: string,
+  options?: { parent_id?: string },
+) {
+  const [todo] = await sql`
+    INSERT INTO todos (title, category, parent_id, completed, completed_at)
+    VALUES (
+      ${title},
+      ${category},
+      ${options?.parent_id ?? null},
+      true,
+      now()
+    )
+    RETURNING *
+  `
+  return todo
+}

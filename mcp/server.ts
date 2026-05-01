@@ -7,6 +7,7 @@ import {
   listTodos,
   updateTodo,
   deleteTodo,
+  recordCompletedWork,
 } from '../lib/todos.js'
 import { addEntry, queryLog } from '../lib/log.js'
 import { set as setPreference } from '../lib/preferences.js'
@@ -90,6 +91,20 @@ server.tool(
   async ({ id }) => {
     await deleteTodo(id)
     return { content: [{ type: 'text', text: 'Deleted' }] }
+  },
+)
+
+server.tool(
+  'recordCompletedWork',
+  'Add a todo already marked complete — for work that came up and got done in the same breath. One round trip instead of addTodo + completeTodo.',
+  {
+    title: z.string(),
+    category: z.string(),
+    parent_id: z.string().optional(),
+  },
+  async ({ title, category, parent_id }) => {
+    const todo = await recordCompletedWork(title, category, { parent_id })
+    return { content: [{ type: 'text', text: JSON.stringify(todo) }] }
   },
 )
 
