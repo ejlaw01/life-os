@@ -231,3 +231,41 @@ mechanics. Day two is about progress visibility — a UX/psychology
 question the system has to answer for the user to actually trust
 it. The data layer was fine; the rendering layer wasn't telling
 the right story.
+
+---
+
+## 2026-05-01: Two tool registries was one too many
+
+Caught architectural drift between the two clients. The MCP
+server (desktop) and the `/api/voice` Vercel function (phone)
+each maintained their own list of tools — same `lib/` underneath,
+but two parallel tool-definition surfaces with two parallel
+handler dispatches.
+
+The drift had already accumulated:
+
+- `getMorningContext`, `recordCompletedWork`, the
+  `include_completed` flag on `listTodos`, and all three
+  retrospective tools were MCP-only.
+- The phone — *the* surface for the morning ritual — couldn't
+  call the tool actually designed for the morning ritual.
+
+Refactored both consumers to read from a single registry,
+`lib/tools.ts`. Each tool defines name, description, Zod schema,
+and handler exactly once. MCP registers them by walking the list;
+the API derives JSON Schema from the same Zod definitions via
+`z.toJSONSchema` and dispatches by name. Net deletion of ~150
+lines.
+
+**Architectural lesson:** when two surfaces share a backend, the
+surfaces themselves want a shared registry too. Otherwise every
+new feature has to be implemented twice and someone has to
+remember it. The drift is silent until a user notices the phone
+can't do something the desktop can.
+
+**Case-study moment:** day three of V2 surfaces the third class
+of issue. Day one was latency. Day two was progress visibility.
+Day three is multi-surface drift — a class of bug that doesn't
+show up in tests because both surfaces pass their own. The fix
+isn't just "add the missing tools to the API"; it's structural,
+so this class can't recur.
